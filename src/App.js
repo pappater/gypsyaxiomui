@@ -1,61 +1,92 @@
 import React, { Component } from 'react';
 import './App.css';
-import { TwitterShareButton, TwitterIcon } from "react-share";
-export default class App extends Component {
+import config from './config';
 
+export default class App extends Component {
   state = {
-    wit: {
-      sayings:'Hi.',
-      film:''
-    },
-    loading: false
+    quotes: [],
+    currentIndex: 0,
+    loading: true
   }
 
   componentDidMount() {
-    this.fetchSaying();
+    this.fetchQuotes();
   }
-  fetchNewSayings = () => {
-    this.setState({ loading: true })
-    this.fetchSaying();
-  }
-  fetchSaying = () => {
-    fetch('https://randomriffs.herokuapp.com/api/random', { mode: 'cors' })
-      .then((response) => {
-        return response.json();
+
+  fetchQuotes = () => {
+    fetch(config.quotesUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        const quotes = data[0] || [];
+        this.setState({ quotes, loading: false });
       })
-      .then((wit) => {
-        this.setState({ wit, loading: false })
-      })
-      .catch(function (error) {
-        console.log('Request failed', error)
+      .catch((error) => {
+        console.log('Request failed', error);
+        this.setState({ loading: false });
       });
   }
+
+  handleNext = () => {
+    this.setState((prevState) => ({
+      currentIndex: (prevState.currentIndex + 1) % prevState.quotes.length
+    }));
+  }
+
+  handlePrevious = () => {
+    this.setState((prevState) => ({
+      currentIndex: prevState.currentIndex === 0 
+        ? prevState.quotes.length - 1 
+        : prevState.currentIndex - 1
+    }));
+  }
+
   render() {
+    const { quotes, currentIndex, loading } = this.state;
+    const currentQuote = quotes[currentIndex];
+
+    if (loading) {
+      return (
+        <div className='container'>
+          <div className='quote-section'>
+            <p className='loading'>Loading...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (!currentQuote) {
+      return (
+        <div className='container'>
+          <div className='quote-section'>
+            <p className='loading'>No quotes available</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className='container'>
-        <div className={this.state.loading ? '' : 'activeFadeIn'}>
-          <h3>{this.state.wit.sayings.charAt(0).toUpperCase() + this.state.wit.sayings.slice(1)}</h3>
-          <p>{this.state.wit.film.replace(/-/g, ' ')} </p>
+        <div className='quote-section'>
+          <blockquote className='quote'>{currentQuote.quote}</blockquote>
+          <p className='author'>— {currentQuote.author}</p>
         </div>
-        <div className="fixed-bottom">
-          <div className='share'>
-            <TwitterShareButton
-              url={'@gypsyaxiom`'}
-              title={this.state.wit.sayings}
-              className="twitter-share-btn"
-              target="_blank"
-            >
-              <TwitterIcon size={32} round className='twt-icon' />
-            </TwitterShareButton>
-            <button className='fetch-button' onClick={this.fetchNewSayings}>
-              {this.state.loading ?
-                '.....' :
-                'Fetch'}
-            </button>
-          </div>
-
+        <div className='navigation'>
+          <button 
+            className='nav-button' 
+            onClick={this.handlePrevious}
+            aria-label='Previous quote'
+          >
+            ←
+          </button>
+          <button 
+            className='nav-button' 
+            onClick={this.handleNext}
+            aria-label='Next quote'
+          >
+            →
+          </button>
         </div>
       </div>
-    )
+    );
   }
 }
