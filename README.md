@@ -2,6 +2,8 @@
 
 A minimalist, responsive web application that displays inspirational quotes with a clean black and white theme.
 
+![App Screenshot](https://github.com/user-attachments/assets/a93311f6-754f-4317-9d92-a6fa871d944a)
+
 ## Features
 
 - **Minimalist Design**: Clean, distraction-free interface with black and white theme
