@@ -30,10 +30,10 @@ const config = {
 
 ### Prerequisites
 
-- Node.js 16 or higher (tested with Node.js 16 and 20)
+- Node.js 16 (recommended)
 - npm
 
-**Note**: For Node.js 17 and higher, you'll need to use the `NODE_OPTIONS=--openssl-legacy-provider` flag due to OpenSSL changes in newer Node versions.
+**Note**: This project uses `react-scripts 3.4.1` which works best with Node.js 16. For Node.js 17+, consider upgrading to a newer version of react-scripts.
 
 ### Installation
 
@@ -43,19 +43,17 @@ npm install
 
 ### Running Locally
 
-| Node.js Version | Command |
-|----------------|---------|
-| Node.js 17+ | `NODE_OPTIONS=--openssl-legacy-provider npm start` |
-| Node.js 16 and below | `npm start` |
+```bash
+npm start
+```
 
 The application will open at [http://localhost:3000/gypsyaxiomui](http://localhost:3000/gypsyaxiomui)
 
 ### Building for Production
 
-| Node.js Version | Command |
-|----------------|---------|
-| Node.js 17+ | `NODE_OPTIONS=--openssl-legacy-provider npm run build` |
-| Node.js 16 and below | `npm run build` |
+```bash
+npm run build
+```
 
 ## Deployment
 
