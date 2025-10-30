@@ -30,8 +30,10 @@ const config = {
 
 ### Prerequisites
 
-- Node.js 16 or higher
+- Node.js 16 or higher (tested with Node.js 16 and 20)
 - npm
+
+**Note**: For Node.js 17+, you'll need to use the `NODE_OPTIONS=--openssl-legacy-provider` flag due to OpenSSL changes in newer Node versions.
 
 ### Installation
 
@@ -41,22 +43,32 @@ npm install
 
 ### Running Locally
 
+For Node.js 17 or higher, use the legacy OpenSSL provider:
+
 ```bash
-npm start
+NODE_OPTIONS=--openssl-legacy-provider npm start
 ```
 
 The application will open at [http://localhost:3000/gypsyaxiomui](http://localhost:3000/gypsyaxiomui)
 
-### Building for Production
+For Node.js 16 and below:
 
 ```bash
-npm run build
+npm start
 ```
 
-For older Node versions, you may need to use:
+### Building for Production
+
+For Node.js 17 or higher, use the legacy OpenSSL provider:
 
 ```bash
 NODE_OPTIONS=--openssl-legacy-provider npm run build
+```
+
+For Node.js 16 and below:
+
+```bash
+npm run build
 ```
 
 ## Deployment
