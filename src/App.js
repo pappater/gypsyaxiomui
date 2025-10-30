@@ -27,7 +27,8 @@ export default class App extends Component {
     fetch(config.quotesUrl)
       .then((response) => response.json())
       .then((data) => {
-        const quotes = data[0] || [];
+        // Flatten the array of arrays to get all quotes
+        const quotes = data.flat() || [];
         const shuffledQuotes = this.shuffleArray(quotes);
         this.setState({ quotes: shuffledQuotes, loading: false });
       })
